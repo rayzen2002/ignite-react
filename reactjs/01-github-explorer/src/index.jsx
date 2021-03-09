@@ -1,7 +1,9 @@
 import { render } from 'react-dom'
-import { App } from './app'
-import { global } from '../styles/global.scss'
+import { RepositoryList } from '../components/RepositoryList'
+import '../styles/global.scss';
 
-render(<App /> , document.getElementById('root'))
+
+
+render(<RepositoryList /> , document.getElementById('root'))
 
 
