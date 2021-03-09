@@ -214,23 +214,19 @@
     ```
 
     ```jsx
-    module:{
-    	rules: [
-    		{
-    			...
-    			use:{
-    				 loader: 'babel-loader',
-    			   options: {
-    						plugins: [
-    							isDevelopment && require.resolve('react-refresh/babel')
-    							].filter(Boolean)
-    						}				
-
-    		},
-
-    	],
-
-    }
+        rules: [
+            {
+                test: /\.jsx$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options:{
+                        plugins:[
+                            isDevelopment && require.resolve('react-refresh/babel')
+                        ].filter(Boolean)
+                    }
+                }
+            },
     ```
 
 # 2 . Conceitos importantes
