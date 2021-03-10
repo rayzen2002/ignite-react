@@ -2,7 +2,11 @@ import { RepositoryItem } from "./RepositoryItem";
 import '../styles/repositories.scss'
 import { useState, useEffect } from "react";
 
-
+/*type Repository = {
+    name : String
+    description : String
+    html_url : String
+}*/
 export function RepositoryList() {
     const [repositories , setRepositories] = useState([]);
     
