@@ -10,7 +10,6 @@ export function App() {
   return (
     <div className="App">
       <Title>Hello GitHub</Title>
-      <button></button>
       <GlobalStyle />
     </div>
   );
