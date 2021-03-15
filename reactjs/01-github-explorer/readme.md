@@ -17,17 +17,32 @@
 
     ```jsx
     yarn add @babel/core @babel/cli @babel/preset-env -D
+    //babel/cli => Oferece uma variedade de comandos que facilitam o trabalho 
+    //com o babel.
+
+    //babel/preset-env => Identifica qual é o ambiente que está rodando o código 
+    //para transpilar o código de forma mais eficiente.
+
+    //babel/preset-react => Preset para o babel entender a sintaxe do react.
     ```
 
     ```jsx
     yarn add webpack webpack-cli webpack-dev-server -D
+    //webpack-cli => Oferece uma variedade de comandos que facilitam o trabalho 
+    //com o webpack. Alguns comandos padroes: init, loader,plugin,serve,watch.
+
+    //webpack-dev-server => Disponibiliza um servidor de desenvolvimento com 
+    //auto reload, auto transpile.
     ```
 
     ```jsx
     yarn add node-sass -D
     ```
 
-    - Depois vamos  configurar as dependências que foram instaladas no projeto.
+    - Estruturando as pastas do projeto:
+
+    ### Depois vamos  configurar as dependências que foram instaladas no projeto.
+
     - **Babel** ⇒ Babel serve para converter todos os códigos para uma versao compativel com o versoes antigas do navegador, por exemplo funções do React ou funcionalidades novas do JavaScript convertidas para uma escrita legível em todos os tipos de ambientes. Configurando:
 
       Criar um arquivo na raiz do projeto, "babel.config.js" , e configurar o arquivo de preset de acordo com a [documentacao](https://babeljs.io/setup#installation), e 
@@ -214,19 +229,23 @@
     ```
 
     ```jsx
-        rules: [
-            {
-                test: /\.jsx$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options:{
-                        plugins:[
-                            isDevelopment && require.resolve('react-refresh/babel')
-                        ].filter(Boolean)
-                    }
-                }
-            },
+    module:{
+    	rules: [
+    		{
+    			...
+    			use:{
+    				 loader: 'babel-loader',
+    			   options: {
+    						plugins: [
+    							isDevelopment && require.resolve('react-refresh/babel')
+    							].filter(Boolean)
+    						}				
+
+    		},
+
+    	],
+
+    }
     ```
 
 # 2 . Conceitos importantes
@@ -265,3 +284,59 @@
     ```
 
 Exemplo de Função de um contador usando useState para atualizar a tela. O useState() retorna 2 valores, o valor inicial (counter = 0 ) e uma função que atualiza o valor.
+
+# 3 . Chamadas HTTP
+
+React Hooks
+
+- Hooks (gancho), foi uma nova adicao ao React 16.8 que possibilitam voce usar state e outras features React sem escrever uma classe. O hook mais comum eh o useState, visto no exemplo do contador acima, onde o comportamento do hook eh visto de forma mais clara.
+- useEffect⇒ Um componente React(funcional) usa props e state para calcular seu [output.Se](http://output.Se) o componente funcional faz calculos que nao visam o output, esses valores sao chamados side-effects. Exemplos de side-effects sao fetch requests, manipulacao do DOM, funcoes como setTimeout() e etc.O hook useEffect desacopla a renderizacao de componentes dos side-effects. useEffect aceita 2 argumentos:
+
+    ```jsx
+        useEffect(callback[,dependencies]);
+    ```
+
+    - callback ⇒ eh a funcao callback contendo a logica do side-effect.useEffect() exeuta o calback apos o React commitar as mudancas na tela.
+    - dependencies ⇒ eh um array opcional de dependencias. useEffect() executa callback apenas se as dependencias tiverem mudado entre renderizacoes.
+
+# 4 . Usando TypeScript
+
+- Typescript eh um superset de JavaScript cuja proposta eh facilitar o desenvolvimento, uma vez que ele traz muitos beneficios, tais como:
+    - Tipos definidos
+    - Classes
+    - Modulos(Mais facil de exportar codigos)
+    - Navegacao no codigo fonte(eh possivel renomear, encontrar referencias e definicoes)
+    - interfaces
+    - Refatoracoes
+
+    - Configurando o TypeScript:
+        - Agora para instalar o typescript na nossa aplicação, a primeira coisa que iremos fazer é instalar o typescript como uma dependência de desenvolvimento, logo depois nós iremos executar o comando tsc — init para iniciar o typescript na nossa aplicação.
+        - Agora no arquivo gerado chamado tsconfig.json nós iremos fazer as configurações do  typescript.
+
+            ```json
+            {
+              "compilerOptions": {
+            	"lib": ["DOM", "DOM.Iterable", "ESNext"],
+            	"allowJs": true,     
+            	"jsx": "react-jsx",
+            	"noEmit": true,
+            	"strict": true,
+            	"moduleResolution": "node",  
+            	"resolveJsonModule": true,
+            	"isolatedModules": true,
+            	"allowSyntheticDefaultImports": true,
+            	"esModuleInterop": true,
+            	"skipLibCheck": true,   
+            	"forceConsistentCasingInFileNames": true  
+              },
+              "include": ["src"]
+            }
+            ```
+
+        - Porem o Babel não entende arquivos do tipo typescript, então o que iremos adicionar é o @babel/preset-typescript como dependência de desenvolvimento e lá no nosso arquivo de config do babel iremos adicionar mais uma linha com esse preset.
+
+        - Agora no nosso webpack.config.js nós iremos mudar um pouco a expressão regular do javascript no array de rules, trocar a expressão que checa arquivos do tipo jsx, para um expressão que checa arquivos do tipo jsx e tsx, adicionando essa alteração /\.(j|t)tsx$/.E por fim basta adicionar as outras extensões no array extensions, que são a ts e a tsx. Agora no nosso entry nós iremos trocar o index.jsx para index.tsx e não se esqueça de alterar o index também para que seja tsx.
+
+        - Quando instalamos o typescript na nossa aplicação e estamos utilizando algumas bibliotecas de terceiros, algo que pode acontecer é do gerenciador de pacotes não instalar as tipagens daquela biblioteca diretamente, o que causará erro no typescript. Para resolver esse erro nós podemos instalar qualquer tipagem que esteja nas bibliotecas do @types apesar utilizando o comando yarn add @types/<biblioteca> -D, lembre-se de sempre instalar como dependência de desenvolvimento.
+
+        - Algo que podemos fazer no React é adicionar uma tipagem ao nosso state, nós podemos passar um generic para o useState, que é basicamente uma funcionalidade que nos permite adicionar um tipo genérico para uma propriedade. Sendo assim nós podemos passar no generic o tipo, e caso seja como array nós podemos colocar o [ ] no final. Dessa forma useState<interFace>().
